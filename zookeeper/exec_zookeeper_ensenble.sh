@@ -1,6 +1,9 @@
 #!/bin/bash
 
-docker network create zoo-net --driver bridge
+# docker network name
+ZOOKEEPER_NETWORK_NAME=zoo-net
+
+docker network create ${ZOOKEEPER_NETWORK_NAME} --driver bridge
 
 docker run -d --name zookeeper1 \
 	--network zoo-net \
