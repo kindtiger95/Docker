@@ -1,12 +1,6 @@
 version: '3'
 
 networks:
-  default:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 192.168.0.0/16
-          gateway: 192.168.0.1
   zookeeper_default:
     name: zookeeper_default
     external: true
@@ -22,14 +16,13 @@ services:
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://192.168.30.101:9092
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
     ports:
       - "9092:9092"
     networks:
-      default:
-        ipv4_address: 192.168.30.101
-      zookeeper_default:
+      - default
+      - zookeeper_default
 
   kafka-broker2:
     image: bitnami/kafka
@@ -41,14 +34,13 @@ services:
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://192.168.30.102:9092
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
     ports:
       - "9093:9092"
     networks:
-      default:
-        ipv4_address: 192.168.30.102
-      zookeeper_default:
+      - default
+      - zookeeper_default
 
   kafka-broker3:
     image: bitnami/kafka
@@ -60,11 +52,10 @@ services:
     environment:
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://192.168.30.103:9092
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://0.0.0.0:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
     ports:
       - "9094:9092"
     networks:
-      default:
-        ipv4_address: 192.168.30.103
-      zookeeper_default:
+      - default
+      - zookeeper_default
