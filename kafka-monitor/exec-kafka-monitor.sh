@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker run -d --name kafka-monitor-local -p 15052:8080 \
+docker run -d --name kafka-monitor-local -p 15050:8080 \
 	-e KAFKA_CLUSTERS_0_NAME=kafka-broker1 \
 	-e KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=192.168.30.101:9092 \
 	-e KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper1:2181,zookeeper2:2181,zookeeper3:2181 \

@@ -5,6 +5,7 @@ services:
     image: bitnami/zookeeper
     hostname: zookeeper1
     container_name: zookeeper1
+    restart: always
     user: root
     volumes:
       - ~/data/zookeeper1:/bitnami/zookeeper
@@ -20,6 +21,7 @@ services:
     image: bitnami/zookeeper
     hostname: zookeeper2
     container_name: zookeeper2
+    restart: always
     user: root
     volumes:
       - ~/data/zookeeper2:/bitnami/zookeeper
@@ -35,6 +37,7 @@ services:
     image: bitnami/zookeeper
     hostname: zookeeper3
     container_name: zookeeper3
+    restart: always
     user: root
     volumes:
       - ~/data/zookeeper3:/bitnami/zookeeper
