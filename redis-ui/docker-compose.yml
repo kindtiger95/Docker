@@ -8,4 +8,4 @@ services:
     ports:
       - 7843:7843
     volumes:
-      - /home/jib/redis-ui-settings:/settings
+      - /home/jib/data/redis-ui-settings:/settings
