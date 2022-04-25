@@ -1,7 +1,7 @@
 #!/bin/bash
 
 docker run -d \
-	--name registry \
+	--name docker-registry \
 	--restart=always \
 	-p 5000:5000 \
 	-v ~/data/registry:/var/lib/registry \
