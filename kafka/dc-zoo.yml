@@ -1,0 +1,68 @@
+version: '3'
+
+networks:
+  kafka-net:
+    name: kafka-net
+    external: true
+
+services:
+  zoo1:
+    image: bitnami/zookeeper:3.5.10
+    hostname: zoo1
+    container_name: zoo1
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+      - ZOO_SERVER_ID=1
+      - ZOO_ENABLE_AUTH=yes
+      - ZOO_SERVER_USERS=admin,zkserverid
+      - ZOO_SERVER_PASSWORDS=adminzoo,zkserverpw
+      - ZOO_CLIENT_USER=zkserverid
+      - ZOO_CLIENT_PASSWORD=zkserverpw
+      - ZOO_SERVERS=0.0.0.0:2888:3888,zoo2:2888:3888,zoo3:2888:3888
+    # volumes:
+      # - ~/data/zoo1:/bitnami/zookeeper
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.30.11
+
+  zoo2:
+    image: bitnami/zookeeper:3.5.10
+    hostname: zoo2
+    container_name: zoo2
+    restart: always
+    environment:
+      - TZAsia/Seoul
+      - ZOO_SERVER_ID=2
+      - ZOO_ENABLE_AUTH=yes
+      - ZOO_SERVER_USERS=admin,zkserverid
+      - ZOO_SERVER_PASSWORDS=adminzoo,zkserverpw
+      - ZOO_CLIENT_USER=zkserverid
+      - ZOO_CLIENT_PASSWORD=zkserverpw
+      - ZOO_SERVERS=zoo1:2888:3888,0.0.0.0:2888:3888,zoo3:2888:3888
+    # volumes:
+      # - ~/data/zoo2:/bitnami/zookeeper
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.30.12
+
+  zoo3:
+    image: bitnami/zookeeper:3.5.10
+    hostname: zoo3
+    container_name: zoo3
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+      - ZOO_SERVER_ID=3
+      - ZOO_ENABLE_AUTH=yes
+      - ZOO_SERVER_USERS=admin,zkserverid
+      - ZOO_SERVER_PASSWORDS=adminzoo,zkserverpw
+      - ZOO_CLIENT_USER=zkserverid
+      - ZOO_CLIENT_PASSWORD=zkserverpw
+      - ZOO_SERVERS=zoo1:2888:3888,zoo2:2888:3888,0.0.0.0:2888:3888
+    # volumes:
+      # - ~/data/zoo3:/bitnami/zookeeper
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.30.13
+

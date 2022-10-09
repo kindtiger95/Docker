@@ -1,0 +1,26 @@
+version: '3'
+
+networks:
+  kafka-net:
+    name: kafka-net
+    external: true
+
+services:
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    hostname: kafka-ui
+    container_name: kafka-ui
+    restart: always
+    environment:
+      TZ: Asia/Seoul
+      KAFKA_CLUSTERS_0_NAME: kafka1
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:9093
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
+      KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: SASL_PLAINTEXT
+      KAFKA_CLUSTERS_0_PROPERTIES_SASL_MECHANISM: PLAIN
+      KAFKA_CLUSTERS_0_PROPERTIES_SASL_JAAS_CONFIG: 'org.apache.kafka.common.security.plain.PlainLoginModule required username="ibjang" password="ibjang123";'
+    ports:
+      - "8080:8080"
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.30.51
