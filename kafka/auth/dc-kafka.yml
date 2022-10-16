@@ -19,18 +19,22 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,CLIENT:SASL_PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
       - KAFKA_CFG_LISTENERS=INTERNAL://:9092,CLIENT://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka1:9092,CLIENT://192.168.30.101:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka1:9092,CLIENT://192.168.40.101:9093
       - KAFKA_ZOOKEEPER_PROTOCOL=SASL
       - KAFKA_ZOOKEEPER_USER=zkserverid
       - KAFKA_ZOOKEEPER_PASSWORD=zkserverpw
       - TZ=Asia/Seoul
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
     volumes:
       - ~/data/kafka1:/bitnami/kafka
     ports:
       - "9092:9093"
     networks:
       kafka-net:
-        ipv4_address: 192.168.30.101
+        ipv4_address: 192.168.40.101
 
   kafka2:
     image: bitnami/kafka:3.1.2
@@ -45,18 +49,22 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,CLIENT:SASL_PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
       - KAFKA_CFG_LISTENERS=INTERNAL://:9092,CLIENT://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka2:9092,CLIENT://192.168.30.102:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka2:9092,CLIENT://192.168.40.102:9093
       - KAFKA_ZOOKEEPER_PROTOCOL=SASL
       - KAFKA_ZOOKEEPER_USER=zkserverid
       - KAFKA_ZOOKEEPER_PASSWORD=zkserverpw
       - TZ=Asia/Seoul
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
     volumes:
       - ~/data/kafka2:/bitnami/kafka
     ports:
       - "9093:9093"
     networks:
       kafka-net:
-        ipv4_address: 192.168.30.102
+        ipv4_address: 192.168.40.102
 
   kafka3:
     image: bitnami/kafka:3.1.2
@@ -71,15 +79,79 @@ services:
       - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=INTERNAL:PLAINTEXT,CLIENT:SASL_PLAINTEXT
       - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=INTERNAL
       - KAFKA_CFG_LISTENERS=INTERNAL://:9092,CLIENT://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka3:9092,CLIENT://192.168.30.103:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=INTERNAL://kafka3:9092,CLIENT://192.168.40.103:9093
       - KAFKA_ZOOKEEPER_PROTOCOL=SASL
       - KAFKA_ZOOKEEPER_USER=zkserverid
       - KAFKA_ZOOKEEPER_PASSWORD=zkserverpw
       - TZ=Asia/Seoul
+    depends_on:
+      - zoo1
+      - zoo2
+      - zoo3
     volumes:
       - ~/data/kafka3:/bitnami/kafka
     ports:
       - "9094:9093"
     networks:
       kafka-net:
-        ipv4_address: 192.168.30.103
+        ipv4_address: 192.168.40.103
+
+  zoo1:
+    image: bitnami/zookeeper:3.5.10
+    hostname: zoo1
+    container_name: zoo1
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+      - ZOO_SERVER_ID=1
+      - ZOO_ENABLE_AUTH=yes
+      - ZOO_SERVER_USERS=admin,zkserverid
+      - ZOO_SERVER_PASSWORDS=adminzoo,zkserverpw
+      - ZOO_CLIENT_USER=zkserverid
+      - ZOO_CLIENT_PASSWORD=zkserverpw
+      - ZOO_SERVERS=0.0.0.0:2888:3888,zoo2:2888:3888,zoo3:2888:3888
+    volumes:
+      - ~/data/zoo1:/bitnami/zookeeper
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.40.11
+
+  zoo2:
+    image: bitnami/zookeeper:3.5.10
+    hostname: zoo2
+    container_name: zoo2
+    restart: always
+    environment:
+      - TZAsia/Seoul
+      - ZOO_SERVER_ID=2
+      - ZOO_ENABLE_AUTH=yes
+      - ZOO_SERVER_USERS=admin,zkserverid
+      - ZOO_SERVER_PASSWORDS=adminzoo,zkserverpw
+      - ZOO_CLIENT_USER=zkserverid
+      - ZOO_CLIENT_PASSWORD=zkserverpw
+      - ZOO_SERVERS=zoo1:2888:3888,0.0.0.0:2888:3888,zoo3:2888:3888
+    volumes:
+      - ~/data/zoo2:/bitnami/zookeeper
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.40.12
+
+  zoo3:
+    image: bitnami/zookeeper:3.5.10
+    hostname: zoo3
+    container_name: zoo3
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+      - ZOO_SERVER_ID=3
+      - ZOO_ENABLE_AUTH=yes
+      - ZOO_SERVER_USERS=admin,zkserverid
+      - ZOO_SERVER_PASSWORDS=adminzoo,zkserverpw
+      - ZOO_CLIENT_USER=zkserverid
+      - ZOO_CLIENT_PASSWORD=zkserverpw
+      - ZOO_SERVERS=zoo1:2888:3888,zoo2:2888:3888,0.0.0.0:2888:3888
+    volumes:
+      - ~/data/zoo3:/bitnami/zookeeper
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.40.13

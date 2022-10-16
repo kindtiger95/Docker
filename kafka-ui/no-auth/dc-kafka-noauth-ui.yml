@@ -1,0 +1,27 @@
+version: '3'
+
+networks:
+  kafka-net:
+    name: kafka-net
+    external: true
+
+services:
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    hostname: kafka-ui
+    container_name: kafka-ui
+    restart: always
+    environment:
+      TZ: Asia/Seoul
+      KAFKA_CLUSTERS_0_NAME: kafka1
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 192.168.40.101:9093
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zoo1:2181
+      SERVER_SERVLET_CONTEXT_PATH: /kafkaui
+      AUTH_TYPE: "LOGIN_FORM"
+      SPRING_SECURITY_USER_NAME: admin
+      SPRING_SECURITY_USER_PASSWORD: pass
+    ports:
+      - "8080:8080"
+    networks:
+      kafka-net:
+        ipv4_address: 192.168.40.51
