@@ -1,8 +1,9 @@
 #!/bin/bash
 
-docker run -d --name redis-standalone \
-	-v ~/data/redis-standalone:/data \
+docker run -d --name redis \
+	--restart unless-stopped\
+	-v ~/data/redis:/data \
 	-p 6379:6379 \
-	redis:latest
+	redis:6.2.6
 
 exit 0

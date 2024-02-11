@@ -21,7 +21,7 @@ services:
       SPRING_SECURITY_USER_NAME: admin
       SPRING_SECURITY_USER_PASSWORD: pass
     ports:
-      - "8080:8080"
+      - "9101:8080"
     networks:
       kafka-net:
         ipv4_address: 192.168.40.51
