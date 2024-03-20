@@ -14,14 +14,11 @@ services:
     environment:
       TZ: Asia/Seoul
       KAFKA_CLUSTERS_0_NAME: kafka1
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 192.168.40.101:9093
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka1:9092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zoo1:2181
-      SERVER_SERVLET_CONTEXT_PATH: /kafkaui
-      AUTH_TYPE: "LOGIN_FORM"
-      SPRING_SECURITY_USER_NAME: admin
-      SPRING_SECURITY_USER_PASSWORD: pass
+      SERVER_SERVLET_CONTEXT_PATH: /kafka-ui
     ports:
-      - "9101:8080"
+      - "127.0.0.1:9101:8080"
     networks:
       kafka-net:
         ipv4_address: 192.168.40.51
